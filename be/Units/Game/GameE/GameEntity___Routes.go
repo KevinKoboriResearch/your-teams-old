@@ -1,7 +1,7 @@
 package GameEntity
 
 import (
-	"yt/be/HyperText"
+	"be/HyperText"
 )
 
 var controller = &GameEntityController{GameEntityRepository: GameEntityRepository{}}

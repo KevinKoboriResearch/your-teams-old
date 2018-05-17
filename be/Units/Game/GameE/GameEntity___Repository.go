@@ -2,7 +2,7 @@ package GameEntity
 
 import (
 	"strings"
-	"yt/be/Database"
+	"be/Database"
 )
 
 const DOCNAME = "user_entity"

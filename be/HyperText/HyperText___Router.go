@@ -2,7 +2,6 @@ package HyperText
 
 import (
 	"net/http"
-
 	"github.com/gorilla/mux"
 )
 

@@ -2,7 +2,7 @@ package GenreEntity
 
 import (
 	"strings"
-	"yt/be/Database"
+	"be/Database"
 )
 
 const DOCNAME = "genre_entity"

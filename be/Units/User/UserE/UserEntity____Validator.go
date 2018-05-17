@@ -4,8 +4,8 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 	"gopkg.in/mgo.v2/bson"
 	"strings"
-	"yt/be/Database"
-	"yt/be/HyperText"
+	"be/Database"
+	"be/HyperText"
 )
 
 //-------------------------------- VAL --------------------------------//

@@ -4,8 +4,8 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strings"
-	"yt/be/Database"
-	"yt/be/HyperText"
+	"be/Database"
+	"be/HyperText"
 )
 
 //-------------------------------- USR --------------------------------//

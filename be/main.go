@@ -1,7 +1,7 @@
 package main
 
 import (
-	"yt/be/ServerSetup"
+	"be/ServerSetup"
 )
 
 func main() {

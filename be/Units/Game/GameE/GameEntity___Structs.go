@@ -1,6 +1,6 @@
 package GameEntity
 
-import ("yt/be/Units/Game/GenreEntity")
+import ("be/Units/Game/GenreEntity")
 
 type GameEntityRepository struct{}
 

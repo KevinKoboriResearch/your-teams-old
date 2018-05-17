@@ -1,7 +1,7 @@
 package GenreEntity
 
 import (
-	"yt/be/HyperText"
+	"be/HyperText"
 )
 
 var controller = &GenreEntityController{GenreEntityRepository: GenreEntityRepository{}}

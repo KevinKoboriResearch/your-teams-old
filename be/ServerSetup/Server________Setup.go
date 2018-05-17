@@ -5,9 +5,9 @@ import (
 	"github.com/rs/cors"
 	"log"
 	"net/http"
-	"yt/be/Database"
-	"yt/be/HyperText"
-	"yt/be/Units/User/UserEntity"
+	"be/Database"
+	"be/HyperText"
+	"be/Units/User/UserEntity"
 )
 
 const (

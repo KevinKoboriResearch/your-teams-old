@@ -1,7 +1,7 @@
 package UserEntity
 
 import (
-	"yt/be/HyperText"
+	"be/HyperText"
 )
 
 var controller = &UserEntityController{UserEntityRepository: UserEntityRepository{}}
