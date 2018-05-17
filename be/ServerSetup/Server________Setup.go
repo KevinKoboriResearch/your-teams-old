@@ -41,7 +41,7 @@ func CreateAllRoutes() (routes *mux.Router) {
 }
 
 func StartValidatorUserEntity() {
-	HyperText.Validate.RegisterValidation("username-used", UserEntity.ValidateUsernamUsed)
+	HyperText.Validate.RegisterValidation("username-used", UserEntity.ValidateUsernameUsed)
 	HyperText.Validate.RegisterValidation("email-used", UserEntity.ValidateEmailUsed)
 	HyperText.Validate.RegisterValidation("username-length", UserEntity.ValidateUsernameLength)
 	HyperText.Validate.RegisterValidation("password-length", UserEntity.ValidatePasswordLength)
