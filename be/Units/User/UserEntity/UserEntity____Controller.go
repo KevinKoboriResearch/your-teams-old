@@ -80,6 +80,9 @@ func (c *UserEntityController) UpdatePartial(w http.ResponseWriter, r *http.Requ
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["wrong-Login"])
 		return
 	}
+	if ueu.Password != "" {
+		ueu.Password = ""
+	}
 	result, err := Database.UpdatePartialDB(ueu, DOCNAME, username)
 	if err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-update"])
