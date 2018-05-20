@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"be/Database"
 	"be/HyperText"
-	"be/Units/User/UserEntity"
+	"be/Entities/UserEntity"
 )
 
 const (

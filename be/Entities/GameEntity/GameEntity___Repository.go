@@ -5,7 +5,7 @@ import (
 	"be/Database"
 )
 
-const DOCNAME = "user_entity"
+const DOCNAME = "game_entity"
 
 //-------------------------------- USR --------------------------------//
 func (r GameEntityRepository) InsertGameEntity(ue *GameEntity) (err error) {
