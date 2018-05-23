@@ -1,6 +1,6 @@
 package GameEntity
 
-import ("be/Units/Game/GenreEntity")
+//import ("be/Entities/GenreEntity")
 
 type GameEntityRepository struct{}
 
@@ -14,15 +14,27 @@ type ByOne struct {
 }
 
 type GameEntity struct {
-	Game string `json:"game" validate:"required,game-exist"`
+	Name string `json:"name" validate:"required,name-exist"`
+	Desc string `json:"desc"`
+	Enable bool `json:"enable"`
 //	Company CompanyEntity.CompanyEntity `json:"company"`
 //	Genre GenreEntity.GenreEntity `json:"genre"`
-	Server     string `json:"server" validate:"required,password-length"`
-	Enable   bool   `json:"enable"`
+//	Server     string `json:"server" validate:"required,password-length"`
 }
 
 type GameEntities []GameEntity
 
 type GameExist struct {
-	Game string `json:"game" validate:"required,game-exist"`
+	Name string `json:"name" validate:"required,name-exist"`
+}
+
+type AdminGameEntity struct {
+	Username string `json:"username"`
+	Password string `json:"password" validate:"required,password-length"`
+	Name string `json:"name" validate:"required,name-exist"`
+	Desc string `json:"desc"`
+	Enable bool `json:"enable"`
+//	Company CompanyEntity.CompanyEntity `json:"company"`
+//	Genre GenreEntity.GenreEntity `json:"genre"`
+//	Server     string `json:"server" validate:"required,password-length"`
 }

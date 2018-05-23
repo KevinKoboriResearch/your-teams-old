@@ -1,4 +1,4 @@
-package Database
+package Interface
 
 import (
 	"gopkg.in/mgo.v2"

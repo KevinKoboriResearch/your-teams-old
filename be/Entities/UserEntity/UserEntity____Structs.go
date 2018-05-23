@@ -49,6 +49,8 @@ type UserEntityUpdateSingle struct {
 type UserEntityVerify struct {
 	Username string `json:"username"`
 	Password string `json:"password" validate:"required"`
+	Admin    bool   `json:"admin"`
+	Enable   bool   `json:"enable"`
 }
 
 type UserUsername struct {

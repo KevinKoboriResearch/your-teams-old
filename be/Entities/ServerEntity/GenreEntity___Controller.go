@@ -1,4 +1,4 @@
-package GenreEntity
+package Genre
 
 import (
 	"github.com/gorilla/mux"

@@ -5,9 +5,10 @@ import (
 	"github.com/rs/cors"
 	"log"
 	"net/http"
-	"be/Database"
+	"be/Interface"
 	"be/HyperText"
 	"be/Entities/UserEntity"
+		"be/Entities/GameEntity"
 )
 
 const (
@@ -17,9 +18,10 @@ const (
 )
 
 func StartServer() {
-	Database.StartConectionDatabase()
+	Interface.StartConectionDatabase()
 	HyperText.StartValidator()
 	StartValidatorUserEntity()
+	StartValidatorInterfaceEntity()
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "PUT"},
@@ -34,8 +36,10 @@ func StartServer() {
 }
 
 func CreateAllRoutes() (routes *mux.Router) {
-	userRoutes := UserEntity.UserEntityRoutes()
-	appRoutes := append(userRoutes, userRoutes...)
+	userEntityRoutes := UserEntity.UserEntityRoutes()
+	gameEntityRoutes := GameEntity.GameEntityRoutes()
+	appRoutes := append(userEntityRoutes, gameEntityRoutes...)
+//	appRoutes := append(appRoutes, ...)
 	routes = HyperText.NewRouter(appRoutes)
 	return routes
 }
@@ -45,4 +49,8 @@ func StartValidatorUserEntity() {
 	HyperText.Validate.RegisterValidation("email-used", UserEntity.ValidateEmailUsed)
 	HyperText.Validate.RegisterValidation("username-length", UserEntity.ValidateUsernameLength)
 	HyperText.Validate.RegisterValidation("password-length", UserEntity.ValidatePasswordLength)
+}
+
+func StartValidatorInterfaceEntity() {
+	HyperText.Validate.RegisterValidation("name-exist", Interface.ValidateNameExist)
 }

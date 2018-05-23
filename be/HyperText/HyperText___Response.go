@@ -23,7 +23,7 @@ var CustomResponses = map[string]string {
 	`success-update`:         `Successfully Updated`,
 	`wrong-usernameLength`:   `Username needs to contain 5 caracters or more`,
 	`wrong-passwordLength`:   `Password needs to contain 6 caracters or more`,
-	`wrong-verify`:            `Wrong username or password`,
+	`wrong-verify`:           `Wrong username or password`,
 	`wrong-usernameEmail`:    `Wrong Username and Email`,
 	`wrong-usernamePassword`: `Wrong Username and Password`,
 	`wrong-emailPassword`:    `Wrong Email an Password!"}`,
@@ -40,6 +40,7 @@ var CustomResponses = map[string]string {
 	`error-disable`:          `Can't disable now! Try again later`,
 	`notfound-entity`:        `This entity don't exist`,
 	`empty-database`:         `Empty database`,
+	`not-admin`:         			`You don't have Admin permission`,
 }
 
 var Responses = map[int]string {

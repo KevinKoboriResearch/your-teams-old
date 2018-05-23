@@ -1,4 +1,4 @@
-package GenreEntity
+package SubGenreEntity
 
 import (
 	"be/HyperText"

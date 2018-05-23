@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strings"
-	"be/Database"
+	"be/Interface"
 	"be/HyperText"
 )
 
@@ -50,16 +50,19 @@ func (c *UserEntityController) UpdateSingle(w http.ResponseWriter, r *http.Reque
 	if err := HyperText.BodyValidate(r, &ueus); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
-	} else if err := ValidateUpdateSingle(ueus); err != nil {
+	}
+	if err := ValidateUpdateSingle(ueus); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
-	uev := UserEntityVerify{ueus.Username, ueus.Password}
+	uev := UserEntityVerify{}
+	uev.Username = ueus.Username
+	uev.Password = ueus.Password
 	if _, boolean := c.UserEntityRepository.VerifyUserEntity(uev); boolean == false {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["wrong-verify"])
 		return
 	}
-	if _, err := Database.UpdateSingleDB(ueus.Position, ueus.Value, ueus, DOCNAME, ueus.Username); err != nil {
+	if _, err := Interface.UpdateSingleDB(ueus.Position, ueus.Value, ueus, DOCNAME, ueus.Username); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-update"])
 		return
 	}
@@ -75,15 +78,15 @@ func (c *UserEntityController) UpdatePartial(w http.ResponseWriter, r *http.Requ
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
-	uev := UserEntityVerify{username, ueu.Password}
+	uev := UserEntityVerify{}
+	uev.Username = ueu.Username
+	uev.Password = ueu.Password
 	if _, boolean := c.UserEntityRepository.VerifyUserEntity(uev); boolean == false {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["wrong-Login"])
 		return
 	}
-	if ueu.Password != "" {
-		ueu.Password = ""
-	}
-	result, err := Database.UpdatePartialDB(ueu, DOCNAME, username)
+	ueu.Password = ``
+	result, err := Interface.UpdatePartialDB(ueu, DOCNAME, username)
 	if err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-update"])
 		return
@@ -100,12 +103,14 @@ func (c *UserEntityController) Update(w http.ResponseWriter, r *http.Request) {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
-	uev := UserEntityVerify{ueu.Username, ueu.Password}
+	uev := UserEntityVerify{}
+	uev.Username = ueu.Username
+	uev.Password = ueu.Password
 	if _, boolean := c.UserEntityRepository.VerifyUserEntity(uev); boolean == false {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["wrong-Login"])
 		return
 	}
-	result, err := Database.UpdateDB(ueu, DOCNAME, ueu.Username)
+	result, err := Interface.UpdateDB(ueu, DOCNAME, ueu.Username)
 	if err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-update"])
 		return
@@ -142,7 +147,7 @@ func (c *UserEntityController) GetUnit(w http.ResponseWriter, r *http.Request) {
 	username := mux.Vars(r)["username"]
 	username = strings.ToLower(username)
 	result := UserEntityProtected{}
-	if 	err := Database.FindUnitDB(username, &result, DOCNAME); err != nil {
+	if 	err := Interface.FindUnitDB(username, &result, DOCNAME); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["not-found-entity"])
 		return
 	}
@@ -157,8 +162,8 @@ func (c *UserEntityController) FindAllEnabledWhile(w http.ResponseWriter, r *htt
 	position = strings.ToLower(position)
 	value = strings.ToLower(value)
 	entities := UserEntities{}
-	if 	err := Database.FindAllEnabledWhileDB(position, value, &entities, DOCNAME); err != nil {
-		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-database"])
+	if 	err := Interface.FindAllEnabledWhileDB(position, value, &entities, DOCNAME); err != nil {
+		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-Interface"])
 		return
 	}
 	HyperText.HttpResponse(w, http.StatusOK, entities)
@@ -168,8 +173,8 @@ func (c *UserEntityController) FindAllEnabledWhile(w http.ResponseWriter, r *htt
 //-------------------------------- ADM --------------------------------//
 func (c *UserEntityController) GetAllEnabled(w http.ResponseWriter, r *http.Request) {
 	result := UserEntities{}
-	if 	err := Database.FindAllEnabledDB(&result, DOCNAME); err != nil {
-		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-database"])
+	if 	err := Interface.FindAllEnabledDB(&result, DOCNAME); err != nil {
+		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-Interface"])
 		return
 	}
 	HyperText.HttpResponse(w, http.StatusOK, result)
@@ -179,8 +184,8 @@ func (c *UserEntityController) GetAllEnabled(w http.ResponseWriter, r *http.Requ
 //-------------------------------- ADM --------------------------------//
 func (c *UserEntityController) GetAll(w http.ResponseWriter, r *http.Request) {
 	result := UserEntities{}
-	if 	err := Database.FindAllDB(&result, DOCNAME); err != nil {
-		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-database"])
+	if 	err := Interface.FindAllDB(&result, DOCNAME); err != nil {
+		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-Interface"])
 		return
 	}
 	HyperText.HttpResponse(w, http.StatusOK, result)
@@ -191,7 +196,7 @@ func (c *UserEntityController) GetAll(w http.ResponseWriter, r *http.Request) {
 func (c *UserEntityController) Delete(w http.ResponseWriter, r *http.Request) {
 	username := strings.ToLower(mux.Vars(r)["username"])
 	result := UserEntity{}
-	if 	err := Database.DeleteDB(username, &result, DOCNAME); err != nil {
+	if 	err := Interface.DeleteDB(username, &result, DOCNAME); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["not-found-entity"])
 		return
 	}

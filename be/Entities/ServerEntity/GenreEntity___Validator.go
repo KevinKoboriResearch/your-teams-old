@@ -1,4 +1,4 @@
-package GenreEntity
+package GameEntity
 
 import (
 	"gopkg.in/go-playground/validator.v9"

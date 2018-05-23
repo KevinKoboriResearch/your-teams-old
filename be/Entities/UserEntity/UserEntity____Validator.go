@@ -4,13 +4,13 @@ import (
 	"gopkg.in/go-playground/validator.v9"
 	"gopkg.in/mgo.v2/bson"
 	"strings"
-	"be/Database"
+	"be/Interface"
 	"be/HyperText"
 )
 
 //-------------------------------- VAL --------------------------------//
 func ValidateUsernameUsed(username validator.FieldLevel) bool {
-	c := Database.OpenSession(DOCNAME)
+	c := Interface.OpenSession(DOCNAME)
 	u := strings.ToLower(username.Field().String())
 	result := UserEntity{}
 	if err := c.Find(bson.M{"username": u}).One(&result); err != nil {
@@ -20,7 +20,7 @@ func ValidateUsernameUsed(username validator.FieldLevel) bool {
 
 //-------------------------------- VAL --------------------------------//
 func ValidateEmailUsed(email validator.FieldLevel) bool {
-	c := Database.OpenSession(DOCNAME)
+	c := Interface.OpenSession(DOCNAME)
 	e := strings.ToLower(email.Field().String())
 	result := UserEntity{}
 	if err := c.Find(bson.M{"email": e}).One(&result); err != nil {
