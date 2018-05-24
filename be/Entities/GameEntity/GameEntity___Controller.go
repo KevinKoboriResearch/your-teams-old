@@ -28,8 +28,8 @@ func (c *GameEntityController) Insert(w http.ResponseWriter, r *http.Request) {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["not-admin"])
 		return
 	}
-	age.Name = strings.ToLower(age.Name)
-	if err := Interface.InsertDB(&age, DOCNAME); err != nil {
+	//age.Name = strings.ToLower(age.Name)
+	if err := c.GameEntityRepository.InsertGameEntity(&age); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}

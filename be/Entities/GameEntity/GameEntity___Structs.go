@@ -15,6 +15,7 @@ type ByOne struct {
 
 type GameEntity struct {
 	Name string `json:"name" validate:"required,name-exist"`
+	Abbre string `json:"abbreviation"`
 	Desc string `json:"desc"`
 	Enable bool `json:"enable"`
 //	Company CompanyEntity.CompanyEntity `json:"company"`
@@ -32,6 +33,7 @@ type AdminGameEntity struct {
 	Username string `json:"username"`
 	Password string `json:"password" validate:"required,password-length"`
 	Name string `json:"name" validate:"required,name-exist"`
+	Abbre string `json:"abbreviation"`
 	Desc string `json:"desc"`
 	Enable bool `json:"enable"`
 //	Company CompanyEntity.CompanyEntity `json:"company"`

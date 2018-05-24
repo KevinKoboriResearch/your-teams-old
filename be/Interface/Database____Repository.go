@@ -86,8 +86,8 @@ func UpdateDB(entity interface{}, collection string, id string) (interface{}, er
 	c := OpenSession(collection)
 	if collection == "user_entity" {
 		err = c.Update(bson.M{"username": id}, entity)
-	} else if collection == "threads" {
-		err = c.Update(bson.M{"_id": id}, entity)
+	} else if collection == "game_entity" {
+		err = c.Update(bson.M{"name": id}, entity)
 	} else {
 		err = c.Update(bson.M{"_id": id}, entity)
 	}
@@ -104,7 +104,7 @@ func FindUnitDB(id string, entity interface{}, collection string) (err error) {
 	if collection == "user_entity" {
 		err = c.Find(bson.M{"username": id}).One(entity)
 	} else if collection == "game_entity" {
-		err = c.Find(bson.M{"game": id}).One(entity)
+		err = c.Find(bson.M{"name": id}).One(entity)
 	} else {
 		err = c.Find(bson.M{"_id": bson.ObjectIdHex(id)}).One(entity)
 	}
@@ -162,10 +162,10 @@ func FindAllDB(entity interface{}, collection string) (err error) {
 //-------------------------------- DB --------------------------------//
 func DeleteDB(id string, entity interface{}, collection string) (err error) {
 	c := OpenSession(collection)
-	if collection == "user_entity" || collection == "user_link" {
+	if collection == "user_entity" || collection == "user_games" {
 		err = c.Remove(bson.M{"username": id})
 	} else 	if collection == "game_entity" {
-		err = c.Remove(bson.M{"game": id})
+		err = c.Remove(bson.M{"name": id})
 	} else {
 		err = c.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
 	}

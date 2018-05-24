@@ -9,40 +9,40 @@ var routes = HyperText.Routes{{}}
 
 func GameEntityRoutes() HyperText.Routes {
 	routes := HyperText.Routes{
-		HyperText.Route{
+		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Register - Game Entity",
 			"POST",
 			"/Admin/Game/Insert",
 			controller.Insert,
 		},
-		HyperText.Route{
+		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Update - Game Entity",
 			"PUT",
-			"/Admin/Game/Update/game={game}",
+			"/Admin/Game/Update/name={name}",
 			controller.Update,
 		},
-		HyperText.Route{
+		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Get Unit - Game Entity",
 			"GET",
-			"/Admin/Game/Search/game={game}",
+			"/Admin/Game/Search/name={name}",
 			controller.GetUnit,
 		},
-		HyperText.Route{
+		HyperText.Route{ //FUNCIONANDO------------------------------------------------- 50% NAO ACHA abbreviation
 			"Get All While - Game Entities",
 			"GET",
 			"/Admin/Game/Search/position={position}&value={value}",
 			controller.GetAllWhile,
 		},
-		HyperText.Route{
+		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Get All Existing - Game Entities",
 			"GET",
-			"/Admin/Game/Search/game=all",
+			"/Admin/Game/Search/All",
 			controller.GetAll,
 		},
-		HyperText.Route{
+		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Delete - Game Entity",
 			"DELETE",
-			"/Admin/Game/Delete/game={game}",
+			"/Admin/Game/Delete/name={name}",
 			controller.Delete,
 		},
 	}

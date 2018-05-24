@@ -11,6 +11,7 @@ const DOCNAME = "game_entity"
 func (r GameEntityRepository) InsertGameEntity(age *AdminGameEntity) (err error) {
 	var ge GameEntity
 	ge.Name = strings.ToLower(age.Name)
+	ge.Abbre = strings.ToLower(age.Abbre)
 	ge.Desc = strings.ToLower(age.Desc)
 	ge.Enable = true
 	err = Interface.InsertDB(&ge, DOCNAME)
