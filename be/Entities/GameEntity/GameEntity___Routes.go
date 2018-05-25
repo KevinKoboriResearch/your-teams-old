@@ -16,6 +16,12 @@ func GameEntityRoutes() HyperText.Routes {
 			controller.Insert,
 		},
 		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
+			"Update Single - Game Entity",
+			"PUT",
+			"/Admin/UpdateSingle",
+			controller.UpdateSingle,
+		},
+		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Update - Game Entity",
 			"PUT",
 			"/Admin/Game/Update/name={name}",
@@ -27,7 +33,7 @@ func GameEntityRoutes() HyperText.Routes {
 			"/Admin/Game/Search/name={name}",
 			controller.GetUnit,
 		},
-		HyperText.Route{ //FUNCIONANDO------------------------------------------------- 50% NAO ACHA abbreviation
+		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Get All While - Game Entities",
 			"GET",
 			"/Admin/Game/Search/position={position}&value={value}",

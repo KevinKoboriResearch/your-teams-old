@@ -6,6 +6,7 @@ import (
 	"strings"
 	"be/Interface"
 	"be/HyperText"
+	"be/auth"
 )
 
 //-------------------------------- USR --------------------------------//
@@ -32,13 +33,15 @@ func (c *UserEntityController) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	ue, boolean := c.UserEntityRepository.VerifyUserEntity(uev)
 	if boolean == false {
-		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["wrong-verify"])
+		HyperText.HttpErrorResponse(w, http.StatusUnauthorized, HyperText.CustomResponses["wrong-verify"])
 		return
 	}
 	if err := c.UserEntityRepository.EnableUserEntity(ue); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-enable"])
 		return
 	}
+	token := auth.GenerateJWT(ue)
+	w.Header().Add("Authorization", "Bearer " + token)
 	HyperText.HttpResponse(w, http.StatusOK, HyperText.CustomResponses["success-Login"])
 	return
 }
@@ -156,7 +159,7 @@ func (c *UserEntityController) GetUnit(w http.ResponseWriter, r *http.Request) {
 }
 
 //-------------------------------- USR --------------------------------//
-func (c *UserEntityController) FindAllEnabledWhile(w http.ResponseWriter, r *http.Request) {
+func (c *UserEntityController) GetAllEnabledWhile(w http.ResponseWriter, r *http.Request) {
 	position := mux.Vars(r)["position"]
 	value := mux.Vars(r)["value"]
 	position = strings.ToLower(position)

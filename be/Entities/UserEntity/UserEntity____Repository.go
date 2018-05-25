@@ -63,21 +63,21 @@ func (r UserEntityRepository) UpdateUserEntity(ue *UserEntity) (err error) {
 }
 
 //-------------------------------- BG --------------------------------//
-func (r UserEntityRepository) VerifyUserEntity(uev UserEntityVerify) (UserEntityUpdate, bool) {
+func (r UserEntityRepository) VerifyUserEntity(uev UserEntityVerify) (UserEntity, bool) {
 	uev.Username = strings.ToLower(uev.Username)
-	ueu := UserEntityUpdate{}
-	if err := Interface.FindUnitDB(uev.Username, &ueu, DOCNAME); err != nil {
-		return ueu, false
+	ue := UserEntity{}
+	if err := Interface.FindUnitDB(uev.Username, &ue, DOCNAME); err != nil {
+		return ue, false
 	}
-	boolean := CheckPasswordHash(uev.Password, ueu.Password)
-	return ueu, boolean
+	boolean := CheckPasswordHash(uev.Password, ue.Password)
+	return ue, boolean
 }
 
 //-------------------------------- BG --------------------------------//
-func (r UserEntityRepository) EnableUserEntity(ueu UserEntityUpdate) error {
-	if ueu.Enable == false {
-		ueu.Enable = true
-		if _, err := Interface.UpdateDB(ueu, DOCNAME, ueu.Username); err != nil {
+func (r UserEntityRepository) EnableUserEntity(ue UserEntity) error {
+	if ue.Enable == false {
+		ue.Enable = true
+		if _, err := Interface.UpdateDB(ue, DOCNAME, ue.Username); err != nil {
 			return err
 		}
 		return nil
@@ -86,10 +86,10 @@ func (r UserEntityRepository) EnableUserEntity(ueu UserEntityUpdate) error {
 }
 
 //-------------------------------- BG --------------------------------//
-func (r UserEntityRepository) DisableUserEntity(ueu UserEntityUpdate) error {
-	if ueu.Enable == true {
-		ueu.Enable = false
-		if _, err := Interface.UpdateDB(ueu, DOCNAME, ueu.Username); err != nil {
+func (r UserEntityRepository) DisableUserEntity(ue UserEntity) error {
+	if ue.Enable == true {
+		ue.Enable = false
+		if _, err := Interface.UpdateDB(ue, DOCNAME, ue.Username); err != nil {
 			return err
 		}
 		return nil

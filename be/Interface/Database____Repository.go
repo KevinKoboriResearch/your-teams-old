@@ -27,7 +27,7 @@ func UpdateSingleDB(position string, value string, entity interface{}, collectio
 	if collection == "user_entity" || collection == "user_link" {
 		err = c.Update(bson.M{"username": id}, bson.M{"$set": bson.M{position: value}})
 	} else if collection == "game_entity" {
-		err = c.Update(bson.M{"game": id}, bson.M{"$set": bson.M{position: value}})
+		err = c.Update(bson.M{"name": id}, bson.M{"$set": bson.M{position: value}})
 	} else {
 		err = c.Update(bson.M{"_id": id}, bson.M{"$set": bson.M{position: value}})
 	}

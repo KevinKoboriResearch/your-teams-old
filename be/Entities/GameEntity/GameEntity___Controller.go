@@ -37,6 +37,33 @@ func (c *GameEntityController) Insert(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+//-------------------------------- USR --------------------------------//
+func (c *GameEntityController) UpdateSingle(w http.ResponseWriter, r *http.Request) {
+	ageus := AdminGameEntityUpdateSingle{}
+	if err := HyperText.BodyValidate(r, &ageus); err != nil {
+		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
+		return
+	}
+	/*
+	if err := ValidateUpdateSingle(ageus); err != nil {
+		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
+		return
+	}*/
+	uev := UserEntity.UserEntityVerify{}
+	uev.Username = ageus.Username
+	uev.Password = ageus.Password
+	if _, boolean := UserEntity.AdminVerify(uev); boolean == false {
+		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["wrong-verify"])
+		return
+	}
+	if _, err := Interface.UpdateSingleDB(ageus.Position, ageus.Value, ageus, DOCNAME, ageus.Name); err != nil {
+		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-update"])
+		return
+	}
+	HyperText.HttpResponse(w, http.StatusOK, HyperText.CustomResponses["success-update"])
+	return
+}
+
 //-------------------------------- ADM --------------------------------//
 func (c *GameEntityController) Update(w http.ResponseWriter, r *http.Request) {
 	var age AdminGameEntity
