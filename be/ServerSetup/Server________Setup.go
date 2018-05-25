@@ -52,5 +52,6 @@ func StartValidatorUserEntity() {
 }
 
 func StartValidatorInterfaceEntity() {
+	HyperText.Validate.RegisterValidation("name-used", Interface.ValidateNameUsed)
 	HyperText.Validate.RegisterValidation("name-exist", Interface.ValidateNameExist)
 }

@@ -1,17 +1,37 @@
-package auth
+package Interface
 
 import (
+	"github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go/request"
+	"github.com/codegangsta/negroni"
 	"crypto/rsa"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/dgrijalva/jwt-go"
-	"github.com/dgrijalva/jwt-go/request"
-
 	"be/HyperText"
 )
+
+type MyClaimsType struct {
+	jwt.StandardClaims
+	User interface{}	`json:"user"`
+}
+
+var routes = HyperText.Routes{{}}
+
+func CreateAuthRoutes() HyperText.Routes {
+	routes := HyperText.Routes{
+
+	}
+
+	return routes
+}
+
+
+func SetAuthenticatedMiddleware(r func(http.ResponseWriter, *http.Request)) (n *negroni.Negroni) {
+    n = negroni.New(negroni.HandlerFunc(ValidateToken), negroni.Wrap(http.HandlerFunc(r)))
+    return
+}
 
 var (
 	privateKey	*rsa.PrivateKey
@@ -19,13 +39,13 @@ var (
 )
 
 func init() {
-	privateBytes, err := ioutil.ReadFile("./private.rsa")
+	privateBytes, err := ioutil.ReadFile("./Interface/auth_________private.rsa")
 
 	if err != nil {
 		log.Fatal("[ERROR] Can't read private file.")
 	}
 
-	publicBytes, err := ioutil.ReadFile("./public.rsa.pub")
+	publicBytes, err := ioutil.ReadFile("./Interface/auth_________public.rsa.pub")
 
 	if err != nil {
 		log.Fatal("[ERROR] Can't read public file.")

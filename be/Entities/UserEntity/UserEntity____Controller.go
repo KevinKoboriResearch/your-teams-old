@@ -6,7 +6,6 @@ import (
 	"strings"
 	"be/Interface"
 	"be/HyperText"
-	"be/auth"
 )
 
 //-------------------------------- USR --------------------------------//
@@ -40,8 +39,8 @@ func (c *UserEntityController) Login(w http.ResponseWriter, r *http.Request) {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-enable"])
 		return
 	}
-	token := auth.GenerateJWT(ue)
-	w.Header().Add("Authorization", "Bearer " + token)
+	token := Interface.GenerateJWT(ue)
+	w.Header().Add("authorization", "Bearer " + token)
 	HyperText.HttpResponse(w, http.StatusOK, HyperText.CustomResponses["success-Login"])
 	return
 }
