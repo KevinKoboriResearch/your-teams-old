@@ -4,9 +4,6 @@ import (
 	"be/HyperText"
 )
 
-var controller = &GameEntityController{GameEntityRepository: GameEntityRepository{}}
-var routes = HyperText.Routes{{}}
-
 func GameEntityRoutes() HyperText.Routes {
 	routes := HyperText.Routes{
 		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
@@ -31,7 +28,7 @@ func GameEntityRoutes() HyperText.Routes {
 			"Get Unit - Game Entity",
 			"GET",
 			"/Admin/Game/Search/name={name}",
-			controller.GetUnit,
+			controller.Get,
 		},
 		HyperText.Route{ //FUNCIONANDO-------------------------------------------------
 			"Get All While - Game Entities",

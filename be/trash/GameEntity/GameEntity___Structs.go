@@ -8,11 +8,6 @@ type GameEntityController struct {
 	GameEntityRepository GameEntityRepository
 }
 
-type ByOne struct {
-	Position string `json:"position" validate:"required"`
-	Value    string `json:"value" validate:"required"`
-}
-
 type GameEntity struct {
 	Name   string `json:"name" validate:"required,name-used"`
 	Abbre  string `json:"abbre"`
@@ -20,11 +15,10 @@ type GameEntity struct {
 	Enable bool   `json:"enable"`
 	//	Company CompanyEntity.CompanyEntity `json:"company"`
 	//	Genre GenreEntity.GenreEntity `json:"genre"`
-	//	Server     string `json:"server" validate:"required,password-length"`
+	//	Server    ServerEntity.ServerEntity `json:"server" validate:"required,password-length"`
 }
 
 type GameEntities []GameEntity
-
 
 type GameUsed struct {
 	Name string `json:"name" validate:"required,name-used"`

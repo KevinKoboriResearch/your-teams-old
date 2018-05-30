@@ -1,8 +1,8 @@
 package HyperText
 
 import (
-	"net/http"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 type Route struct {

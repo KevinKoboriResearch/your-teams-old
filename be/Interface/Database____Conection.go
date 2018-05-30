@@ -26,6 +26,6 @@ func StartConectionDatabase() (err error) {
 }
 
 //-------------------------------- DB --------------------------------//
-func OpenSession(docName string) *mgo.Collection {
-	return database.C(docName)
+func OpenSession(docname string) *mgo.Collection {
+	return database.C(docname)
 }

@@ -1,11 +1,9 @@
 package GameEntity
 
 import (
-	"strings"
 	"be/Interface"
+	"strings"
 )
-
-const DOCNAME = "game_entity"
 
 //-------------------------------- USR --------------------------------//
 func (r GameEntityRepository) InsertGameEntity(age *AdminGameEntity) (err error) {
@@ -14,30 +12,30 @@ func (r GameEntityRepository) InsertGameEntity(age *AdminGameEntity) (err error)
 	ge.Abbre = strings.ToLower(age.Abbre)
 	ge.Desc = strings.ToLower(age.Desc)
 	ge.Enable = true
-	err = Interface.InsertDB(&ge, DOCNAME)
+	err = Interface.InsertDB(DOCNAME, &ge)
 	return
 }
 
 //-------------------------------- USR --------------------------------//
-func (r GameEntityRepository) EnableGameEntity(ge GameEntity) error {
+func (r GameEntityRepository) EnableGameEntity(ge GameEntity) (err error) {
 	if ge.Enable == false {
 		ge.Enable = true
-		if _, err := Interface.UpdateDB(ge, DOCNAME, ge.Name); err != nil {
-			return err
+		if err = Interface.UpdateDB(DOCNAME, ID_NAME, ge.Name, ge); err != nil {
+			return
 		}
-		return nil
+		return
 	}
-	return nil
+	return
 }
 
 //-------------------------------- USR --------------------------------//
-func (r GameEntityRepository) DisableGameEntity(ge GameEntity) error {
+func (r GameEntityRepository) DisableGameEntity(ge GameEntity) (err error) {
 	if ge.Enable == true {
 		ge.Enable = false
-		if _, err := Interface.UpdateDB(ge, DOCNAME, ge.Name); err != nil {
-			return err
+		if err = Interface.UpdateDB(DOCNAME, ID_NAME, ge.Name, ge); err != nil {
+			return
 		}
-		return nil
+		return
 	}
-	return nil
+	return
 }

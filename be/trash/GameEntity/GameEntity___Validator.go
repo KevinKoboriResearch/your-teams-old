@@ -1,7 +1,7 @@
 package GameEntity
 
 import (
-//	"be/Entities/GenreEntity"
+	//	"be/Entities/GenreEntity"
 	"be/HyperText"
 )
 

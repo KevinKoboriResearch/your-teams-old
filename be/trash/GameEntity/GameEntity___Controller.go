@@ -1,18 +1,18 @@
 package GameEntity
 
 import (
+	"be/Entities/UserEntity"
+	"be/HyperText"
+	"be/Interface"
 	"github.com/gorilla/mux"
 	"net/http"
 	"strings"
-	"be/Interface"
-	"be/HyperText"
-	"be/Entities/UserEntity"
 )
 
 //-------------------------------- ADM --------------------------------//
 func (c *GameEntityController) Insert(w http.ResponseWriter, r *http.Request) {
 	var age AdminGameEntity
-	Interface.PutDocValidateNameExist(DOCNAME)
+	Interface.PutDOCNAME(DOCNAME)
 	if err := HyperText.BodyValidate(r, &age); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -28,7 +28,6 @@ func (c *GameEntityController) Insert(w http.ResponseWriter, r *http.Request) {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["not-admin"])
 		return
 	}
-	//age.Name = strings.ToLower(age.Name)
 	if err := c.GameEntityRepository.InsertGameEntity(&age); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -40,7 +39,7 @@ func (c *GameEntityController) Insert(w http.ResponseWriter, r *http.Request) {
 //-------------------------------- USR --------------------------------//
 func (c *GameEntityController) UpdateSingle(w http.ResponseWriter, r *http.Request) {
 	ageus := AdminGameEntityUpdateSingle{}
-	Interface.PutDocValidateNameExist(DOCNAME)
+	Interface.PutDOCNAME(DOCNAME)
 	if err := HyperText.BodyValidate(r, &ageus); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
 		return
@@ -56,7 +55,7 @@ func (c *GameEntityController) UpdateSingle(w http.ResponseWriter, r *http.Reque
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["wrong-verify"])
 		return
 	}
-	if _, err := Interface.UpdateSingleDB(ageus.Position, ageus.Value, ageus, DOCNAME, ageus.Name); err != nil {
+	if err := Interface.UpdateSingleDB(DOCNAME, ID_NAME, ageus.Name, ageus.Position, ageus.Value, ageus); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-update"])
 		return
 	}
@@ -67,7 +66,7 @@ func (c *GameEntityController) UpdateSingle(w http.ResponseWriter, r *http.Reque
 //-------------------------------- ADM --------------------------------//
 func (c *GameEntityController) Update(w http.ResponseWriter, r *http.Request) {
 	var age AdminGameEntity
-	Interface.PutDocValidateNameExist(DOCNAME)
+	Interface.PutDOCNAME(DOCNAME)
 	age.Name = mux.Vars(r)["name"]
 	if err := HyperText.BodyValidate(r, &age); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, err)
@@ -85,25 +84,25 @@ func (c *GameEntityController) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	age.Name = strings.ToLower(age.Name)
-	result, err := Interface.UpdateDB(age, DOCNAME, age.Name)
+	err := Interface.UpdateDB(DOCNAME, ID_NAME, age.Name, &age)
 	if err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["error-update"])
 		return
 	}
-	HyperText.HttpResponse(w, http.StatusOK, result)
+	HyperText.HttpResponse(w, http.StatusOK, age)
 	return
 }
 
 //-------------------------------- ADM --------------------------------//
-func (c *GameEntityController) GetUnit(w http.ResponseWriter, r *http.Request) {
+func (c *GameEntityController) Get(w http.ResponseWriter, r *http.Request) {
 	name := mux.Vars(r)["name"]
 	name = strings.ToLower(name)
-	result := GameEntity{}
-	if 	err := Interface.FindUnitDB(name, &result, DOCNAME); err != nil {
+	ge := GameEntity{}
+	if err := Interface.FindUnitDB(DOCNAME, ID_NAME, name, &ge); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["not-found-entity"])
 		return
 	}
-	HyperText.HttpResponse(w, http.StatusOK, result)
+	HyperText.HttpResponse(w, http.StatusOK, ge)
 	return
 }
 
@@ -114,7 +113,7 @@ func (c *GameEntityController) GetAllWhile(w http.ResponseWriter, r *http.Reques
 	position = strings.ToLower(position)
 	value = strings.ToLower(value)
 	entities := GameEntities{}
-	if 	err := Interface.FindAllWhileDB(position, value, &entities, DOCNAME); err != nil {
+	if err := Interface.FindAllWhileDB(DOCNAME, position, value, &entities); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-Interface"])
 		return
 	}
@@ -124,23 +123,23 @@ func (c *GameEntityController) GetAllWhile(w http.ResponseWriter, r *http.Reques
 
 //-------------------------------- ADM --------------------------------//
 func (c *GameEntityController) GetAll(w http.ResponseWriter, r *http.Request) {
-	result := GameEntities{}
-	if 	err := Interface.FindAllDB(&result, DOCNAME); err != nil {
+	ges := GameEntities{}
+	if err := Interface.FindAllDB(DOCNAME, &ges); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["empty-Interface"])
 		return
 	}
-	HyperText.HttpResponse(w, http.StatusOK, result)
+	HyperText.HttpResponse(w, http.StatusOK, ges)
 	return
 }
 
 //-------------------------------- ADM --------------------------------//
 func (c *GameEntityController) Delete(w http.ResponseWriter, r *http.Request) {
 	name := strings.ToLower(mux.Vars(r)["name"])
-	result := GameEntity{}
-	if 	err := Interface.DeleteDB(name, &result, DOCNAME); err != nil {
+	ge := GameEntity{}
+	if err := Interface.DeleteDB(DOCNAME, ID_NAME, name, &ge); err != nil {
 		HyperText.HttpErrorResponse(w, http.StatusBadRequest, HyperText.CustomResponses["not-found-entity"])
 		return
 	}
-	HyperText.HttpResponse(w, http.StatusOK, result)
+	HyperText.HttpResponse(w, http.StatusOK, ge)
 	return
 }

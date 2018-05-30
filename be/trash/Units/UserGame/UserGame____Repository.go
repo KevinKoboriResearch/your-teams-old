@@ -1,14 +1,14 @@
-package GameEntity
+package UserGame
 
 import (
-	"strings"
 	"be/Interface"
+	"strings"
 )
 
-const DOCNAME = "game_entity"
+const DOCNAME = "user_game"
 
 //-------------------------------- USR --------------------------------//
-func (r GameEntityRepository) InsertGameEntity(age *AdminGameEntity) (err error) {
+func (r GameEntityRepository) InsertGameEntity(age *GameEntity) (err error) {
 	var ge GameEntity
 	ge.Name = strings.ToLower(age.Name)
 	ge.Abbre = strings.ToLower(age.Abbre)

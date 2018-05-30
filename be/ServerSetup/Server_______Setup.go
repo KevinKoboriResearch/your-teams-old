@@ -1,14 +1,14 @@
 package ServerSetup
 
 import (
+	//"be/Entities/GameEntity"
+	"be/Entities/UserEntity"
+	"be/HyperText"
+	"be/Interface"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
 	"net/http"
-	"be/Interface"
-	"be/HyperText"
-	"be/Entities/UserEntity"
-		"be/Entities/GameEntity"
 )
 
 const (
@@ -37,18 +37,19 @@ func StartServer() {
 
 func CreateAllRoutes() (routes *mux.Router) {
 	userEntityRoutes := UserEntity.UserEntityRoutes()
-	gameEntityRoutes := GameEntity.GameEntityRoutes()
-	appRoutes := append(userEntityRoutes, gameEntityRoutes...)
-//	appRoutes := append(appRoutes, ...)
+	//	gameEntityRoutes := GameEntity.GameEntityRoutes()
+	appRoutes := append(userEntityRoutes) //, gameEntityRoutes...)
+	//	appRoutes := append(appRoutes, ...)
 	routes = HyperText.NewRouter(appRoutes)
 	return routes
 }
 
 func StartValidatorUserEntity() {
 	HyperText.Validate.RegisterValidation("username-used", UserEntity.ValidateUsernameUsed)
-	HyperText.Validate.RegisterValidation("email-used", UserEntity.ValidateEmailUsed)
+	HyperText.Validate.RegisterValidation("username-exist", UserEntity.ValidateUsernameExist)
 	HyperText.Validate.RegisterValidation("username-length", UserEntity.ValidateUsernameLength)
 	HyperText.Validate.RegisterValidation("password-length", UserEntity.ValidatePasswordLength)
+	HyperText.Validate.RegisterValidation("email-used", UserEntity.ValidateEmailUsed)
 }
 
 func StartValidatorInterfaceEntity() {

@@ -1,41 +1,38 @@
 package Interface
 
 import (
+	"be/HyperText"
+	"crypto/rsa"
+	"github.com/codegangsta/negroni"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
-	"github.com/codegangsta/negroni"
-	"crypto/rsa"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
-	"be/HyperText"
 )
 
 type MyClaimsType struct {
 	jwt.StandardClaims
-	User interface{}	`json:"user"`
+	User interface{} `json:"user"`
 }
 
 var routes = HyperText.Routes{{}}
 
 func CreateAuthRoutes() HyperText.Routes {
-	routes := HyperText.Routes{
-
-	}
+	routes := HyperText.Routes{}
 
 	return routes
 }
 
-
 func SetAuthenticatedMiddleware(r func(http.ResponseWriter, *http.Request)) (n *negroni.Negroni) {
-    n = negroni.New(negroni.HandlerFunc(ValidateToken), negroni.Wrap(http.HandlerFunc(r)))
-    return
+	n = negroni.New(negroni.HandlerFunc(ValidateToken), negroni.Wrap(http.HandlerFunc(r)))
+	return
 }
 
 var (
-	privateKey	*rsa.PrivateKey
-	publicKey	*rsa.PublicKey
+	privateKey *rsa.PrivateKey
+	publicKey  *rsa.PublicKey
 )
 
 func init() {
@@ -68,7 +65,7 @@ func GenerateJWT(user interface{}) string {
 	claims := MyClaimsType{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Minute * time.Duration(30)).Unix(),
-			Issuer: "Core Forum",
+			Issuer:    "Your Teams",
 		},
 		User: user,
 	}
