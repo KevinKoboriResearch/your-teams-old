@@ -3,7 +3,6 @@ package Interface
 import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"log"
 )
 
 //__ INSERT __________________________________________________________________//
@@ -61,7 +60,6 @@ func FindAllEnabledWhileDB(collection string, position string, value interface{}
 //__ FIND ALL ENABLED ________________________________________________________//
 func FindAllEnabledDB(collection string, entity interface{}) (err error) {
 	err = OpenSession(collection).Find(bson.M{"enable": true}).All(entity)
-	log.Print("[ERROR] failed to find entity: ", err)
 	return
 }
 
@@ -78,5 +76,11 @@ func DeleteDB(collection string, id string, idValue string, entity interface{}) 
 		return
 	}
 	err = OpenSession(collection).Remove(bson.M{id: idValue})
+	return
+}
+
+//__ DELETE ALL COLLECTION __________________________________________________________________//
+func DeleteAllCollection(collection string) (err error) {
+	err = OpenSession(collection).Remove(nil)
 	return
 }

@@ -15,16 +15,23 @@ type EnableStruct struct {
 }
 
 var (
+	TestResponses = map[string]string{
+		`wrong-body`:       `Invalid Body`,
+		`wrong-validation`: `Have Something Wrong With The Body`,
+		`error-database`:   `Several Error on DB Server`,
+		`success`:          `Test Completed Successfully`,
+	}
+
 	CustomResponses = map[string]string{
 		"username-used: Username":   "Username already in use",
 		"username-length: Username": "username needs to contain 5 caracters or more",
 		"password-length: Password": "Password needs to contain 8 caracters or more",
 		"email-used: Email":         "Email already in use",
 		"name-used: Name":           "Name already in use",
-		`success-Login`:             `Successfully Logged in`,
+		`success-login`:             `Successfully Logged in`,
 		`success-disabled`:          `Successfully disabled! The next time you log in you will be automatically reactivated`,
 		`success-insert`:            `Successfully Inserted`,
-		`success-Delete`:            `Successfully Deleted`,
+		`success-delete`:            `Successfully Deleted`,
 		`success-update`:            `Successfully Updated`,
 		`wrong-usernameLength`:      `Username needs to contain 5 caracters or more`,
 		`wrong-passwordLength`:      `Password needs to contain 6 caracters or more`,
@@ -34,12 +41,13 @@ var (
 		`wrong-emailPassword`:       `Wrong Email an Password!"}`,
 		`wrong-email`:               `Invalid Email`,
 		`wrong-body`:                `Invalid Body`,
+		`wrong-validation`:          `Invalid Body type`,
 		`wrong-data`:                `Invalid Data`,
 		`wrong-json`:                `Can't Decode Json`,
 		`exist-username`:            `This username already exists`,
 		`exist-email`:               `Email already Exist`,
 		`error-tryLater`:            `try it again later`,
-		`error-serverDB`:            `Several error on DB server`,
+		`error-database`:            `Several error on DB server`,
 		`error-update`:              `Can't update your entity`,
 		`error-disable`:             `Can't disable now! Try again later`,
 		`notfound-entity`:           `This entity don't exist`,
@@ -118,6 +126,12 @@ var (
 		599: `Network Connect Timeout Error`,
 	}
 )
+
+func HttpTestResponse(w http.ResponseWriter, code int, payload string) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(code)
+	w.Write([]byte(TestResponses[payload]))
+}
 
 func HttpResponse(w http.ResponseWriter, code int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")

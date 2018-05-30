@@ -128,11 +128,29 @@ func (r UserEntityRepository) EnableUserEntity(ue UserEntity) (err error) {
 }
 
 //___________________________ DISABLE ________________________________________//
-func (r UserEntityRepository) DisableUserEntity(uev UserEntityVerify) (err error) {
+func (r UserEntityRepository) DisableUserEntity(uev UserEntityVerify) string {
+
+	uev.Username = strings.ToLower(uev.Username)
+
+	err := Interface.FindDB(DOCNAME, ID_USERNAME, uev.Username, &ue)
+
+	if err != nil {
+		return err.Error()
+	}
+
+	boolean := CheckPasswordHash(uev.Password, ue.Password)
+
+	if boolean == false {
+		return "Wrong Password"
+	}
 
 	err = Interface.UpdateSingleDB(DOCNAME, ID_USERNAME, uev.Username, "enable", false)
 
-	return
+	if err != nil {
+		return err.Error()
+	}
+
+	return ""
 }
 
 //__ ADMIN VERIFY ____________________________________________________________//
