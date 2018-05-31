@@ -55,9 +55,22 @@ const (
 									"position":"image",
 									"value":"http://www.xxx.jpg"
 								}`
+	UserEntityUpdateWRONGBODY = `{
+									"email":"kevin@company.com"
+									"image":"http://www.xxx.jpg"
+								}`
+	UserEntityUpdateWRONGIMAGE = `{
+									"email":"kevin@company.com",
+									"image":"httww.xxx.jpg"
+								}`
+	UserEntityUpdateSUCCESS = `{
+									"email":"kevin@company.com",
+									"image":"http://www.xxx.jpg"
+								}`
 )
 
 var (
+	auth            *http.Response
 	wrongBody       = HyperText.TestResponses["wrong-body"]
 	wrongValidation = HyperText.TestResponses["wrong-validation"]
 	errorDatabase   = HyperText.TestResponses["error-database"]
@@ -67,27 +80,48 @@ var (
 func sendPost(path string, typeReq string, entity string) (resp *http.Response) {
 	r := bytes.NewReader([]byte(entity))
 	resp, _ = http.Post(path, typeReq, r)
-	return resp
+	return
 }
 
-func sendRequestPut(path string, entity string) (resp *http.Response) {
+func sendPut(path string, request string, token string) (resp *http.Response, err error) {
+	client := &http.Client{}
+	req, _ := http.NewRequest("PUT", path, stringToReader(request))
+	if token != "" {
+		req.Header.Set("Authorization", token)
+	}
+	return client.Do(req)
+}
+
+/*
+func sendRequestPut(path string, entity string, token string) (req *http.Request, err error) {
 	r := bytes.NewReader([]byte(entity))
-	resp, _ = http.NewRequest("PUT", path, r)
-	return resp
+	req, _ = http.NewRequest("PUT", path, entity)
+	return
 }
 
-func sendRequestDel(path string, entity string) (resp *http.Request) {
+func sendRequestDel(path string, entity string) (resp *http.Response) {
 	r := bytes.NewReader([]byte(entity))
 	req, _ := http.NewRequest("DELETE", path, r)
 	resp, _ = http.DefaultClient.Do(req)
-	return resp
-}
+	return
+}*/
 
-func respToString(resp *http.Response) (response string) {
+func responseToString(resp *http.Response) (response string) {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(resp.Body)
 	response = buf.String()
 	return
+}
+
+func requestToString(req *http.Request) (response string) {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(req.Body)
+	response = buf.String()
+	return
+}
+
+func stringToReader(s string) *bytes.Reader {
+	return bytes.NewReader([]byte(s))
 }
 
 func compareResults(t *testing.T, response string, expected string) {
